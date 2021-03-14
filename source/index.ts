@@ -86,9 +86,10 @@ async function main() {
                 var turned_on = p.from
                 var turned_off = p.to
                 var about_to_turn_off = moment_sub_mins(p.to, 5)
-                console.log(moment_to_crontab_time(turned_off) + ` /bin/notify-send 'Internet access should be disabled now.'`)
-                console.log(moment_to_crontab_time(about_to_turn_off) + ` /bin/notify-send 'Internet access will be disabled in 5m.'`)
-                console.log(moment_to_crontab_time(turned_on) + ` /bin/notify-send 'Internet access should be enabled now.'`)
+                var uid = process.getuid();
+                console.log(moment_to_crontab_time(turned_off) + ` /bin/notify-send DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/${uid}/bus' 'Internet access should be disabled now.'`)
+                console.log(moment_to_crontab_time(about_to_turn_off) + ` /bin/notify-send DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/${uid}/bus' 'Internet access will be disabled in 5m.'`)
+                console.log(moment_to_crontab_time(turned_on) + ` /bin/notify-send  DBUS_SESSION_BUS_ADDRESS='unix:path=/run/user/${uid}/bus' 'Internet access should be enabled now.'`)
             }
         },
         "-j": () => {
